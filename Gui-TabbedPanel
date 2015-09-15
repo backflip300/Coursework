@@ -1,0 +1,121 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+
+import net.miginfocom.swing.MigLayout;
+
+public class TabbedPanel extends JFrame {
+
+
+	private static final long serialVersionUID = 4251822216194254417L;
+	private JTabbedPane tabbedPane;
+	private JPanel panel1,panel2;
+	private JFrame mFrame;
+	
+	
+	
+	public TabbedPanel() { 
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int width = (int) screenSize.getWidth();
+		int height = (int) screenSize.getHeight();
+		 mFrame = new JFrame("Iventorize");
+		 mFrame.getContentPane().setLayout(new MigLayout());
+		setTitle( "Tabbed Pane Application" );
+		setSize( width, height);
+		setBackground( Color.gray );
+
+		JPanel topPanel = new JPanel();
+		topPanel.setLayout( new BorderLayout() );
+		getContentPane().add( topPanel );
+
+		// Create the tab pages
+		createPage1();
+		createPage2();
+		
+
+		// Create a tabbed pane
+		tabbedPane = new JTabbedPane();
+		tabbedPane.addTab( "Stocks", panel1 );
+		tabbedPane.addTab( "Timetable", panel2 );
+		
+		topPanel.add( tabbedPane, BorderLayout.NORTH );
+		
+	}
+
+
+	private void createPage1() {
+		panel1 = new JPanel();
+		panel1.setLayout(new MigLayout());
+		panel1.add(new JLabel("Input"), "north");
+		String columnNames[] = {"Column1","Column 2", "Column 3"};
+		
+		String dataValues[][] =
+			{
+				{ "cat", "234", "67" },
+				{ "-123", "43", "853" },
+				{ "93", "89.2", "109" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				{ "279", "9033", "3092" },
+				
+			};
+		
+		// Create a new table instance
+				JTable table = new JTable( dataValues, columnNames );
+
+				// Add the table to a scrolling pane
+				JScrollPane scrollPane = new JScrollPane( table );
+				panel1.add( scrollPane, BorderLayout.CENTER );
+	}
+	
+	
+	private void createPage2() {
+		panel2 = new JPanel();
+		panel2.setLayout(new MigLayout());
+		//panel2.add(new JLabel("Output"), "north");
+		
+	}
+
+
+
+	
+	
+	public static void main( String args[] )
+	{
+		// Create an instance of the test application
+		TabbedPanel mainFrame	= new TabbedPanel();
+		mainFrame.setVisible( true );
+	}
+}
