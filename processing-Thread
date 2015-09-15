@@ -1,0 +1,24 @@
+package processing;
+
+public class Thread {
+	public static void main(String args[]) {
+		createGui();
+		takeinputs();
+		generate();
+	}
+
+	private static void generate() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void takeinputs() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void createGui() {
+		// TODO Auto-generated method stub
+		
+	}
+}
