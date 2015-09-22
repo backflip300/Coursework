@@ -1,0 +1,122 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.xml.bind.ParseConversionEvent;
+
+import net.miginfocom.swing.MigLayout;
+
+public class Tab1 {
+	private JPanel tab1;
+
+	private JTable table;
+	private TableModel tModel;
+	private DefaultTableModel dtablemodel;
+
+	public Tab1() {
+
+	}
+
+	@SuppressWarnings("serial")
+	public JPanel create() {
+		tab1 = new JPanel();
+		tab1.setLayout(new MigLayout());
+		tab1.add(new JLabel("Input"), "north");
+		// buttons
+		JButton restock = new JButton("Restock");
+		JButton newStock = new JButton("New Stock");
+
+		tab1.add(restock, "South");
+		tab1.add(newStock, "South");
+		// table
+		tModel = new TableModel();
+		dtablemodel = new DefaultTableModel(tModel.data, new Object[] { "Name",
+				"Current in Stock", "# to restock" }) {
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return column == 2;
+			}
+		};
+
+		table = new JTable(dtablemodel);
+
+		// button actions
+
+		newStock.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				ArrayList<String> stemp = new ArrayList<String>();
+				FileAccess access = new FileAccess(Paths.get("test.txt"));
+				stemp.add(JOptionPane.showInputDialog("name of Stock"));
+				stemp.add(JOptionPane.showInputDialog("current # in stock"));
+				dtablemodel.addRow(new Object[] { stemp.get(0), stemp.get(1), 0 });
+				access.sWriteFileData(stemp.get(0));
+				access.sWriteFileData(stemp.get(1));
+				access.sWriteFileData("0");
+			}
+		});
+
+		restock.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				table.getCellEditor().stopCellEditing();
+				FileAccess access = new FileAccess(Paths.get("test.txt"));
+				ArrayList<Integer> cStocks = new ArrayList<Integer>();
+				ArrayList<Integer> rStocks = new ArrayList<Integer>();
+				String confirm = "to restock \n";
+				String tempcStocks, temprStocks;
+				cStocks.clear();
+				rStocks.clear();
+				for (int i = 0; i < dtablemodel.getRowCount(); i++) {
+					System.out.println(dtablemodel.getValueAt(i, 1));
+					tempcStocks = dtablemodel.getValueAt(i, 1).toString();
+					temprStocks = dtablemodel.getValueAt(i, 2).toString();
+					// System.out.println("\n \n \n" + i);
+					System.out.println(dtablemodel.getValueAt(i, 1));
+					// System.out.println( "\t" + dtablemodel.getValueAt(i, 2));
+
+					cStocks.add(Integer.parseInt(tempcStocks));
+
+					rStocks.add(Integer.parseInt(temprStocks));
+
+					if (rStocks.get(i) != 0) {
+						System.out.println("dill hit");
+						confirm += "\n" + tModel.getValueAt(i, 0) + "\t x"
+								+ rStocks.get(i);
+					}
+				}
+				
+				int dialogButton = JOptionPane.YES_NO_OPTION;
+				int dialogResult = JOptionPane.showConfirmDialog(null, confirm,
+						"Comfirmation", dialogButton);
+				if (dialogResult == JOptionPane.YES_OPTION) {
+					for (int ii = 0; ii < dtablemodel.getRowCount(); ii++) {
+						dtablemodel.setValueAt(
+								(Object) (cStocks.get(ii) + rStocks.get(ii)),
+								ii, 1);
+						access.sEditline(String.valueOf(cStocks.get(ii) + rStocks.get(ii)), (3*ii)+1);
+					}
+				}
+			}
+		});
+		// Adds everything together
+		JScrollPane scrollPane = new JScrollPane(table);
+		tab1.add(scrollPane, BorderLayout.CENTER);
+		return tab1;
+	}
+}
