@@ -1,0 +1,20 @@
+package gui;
+
+import javax.swing.JPanel;
+
+import net.miginfocom.swing.MigLayout;
+
+public class Tab2 {
+	
+	private JPanel tab2;
+public Tab2() {
+	// TODO Auto-generated constructor stub
+}
+
+public JPanel create() {
+	tab2 = new JPanel();
+	tab2.setLayout(new MigLayout());
+	
+	return tab2;
+}
+}
