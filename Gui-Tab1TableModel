@@ -4,14 +4,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-public class TableModel {
-	private Path p1 = Paths.get("test.txt");
+public class Tab1TableModel {
+	private Path Stocks = Paths.get("Stocks.txt");
 	public Object data[][];
-	private String columnNames[] = { "Column1", "Column 2", "Column 3" };
+	private String columnNames[] = { "Name",
+			"Current in Stock", "# to restock" };
 	private int a = 1;
 	ArrayList<Object> data2 = new ArrayList<Object>();
 
-	public TableModel() {
+	public Tab1TableModel() {
 		getdata();
 	}
 
@@ -23,24 +24,24 @@ public class TableModel {
 
 	public int getRowCount() {
 
-		return data2.size() / 3;
+		return data2.size() / 2;
 
 	}
 
 	public Object[][] getdata() {
-		FileAccess access = new FileAccess(p1);
+		FileAccess access = new FileAccess(Stocks);
 		data2 = access.oReadFileData();
 		data = new Object[getRowCount()][getColumnCount()];
 		a = 0;
-		for (int i = 0; i <= getRowCount() - 1; i++) {
+		for (int i = 0; i < getRowCount(); i++) {
 			for (int ii = 0; ii < 3; ii++) {
-				if (a == 0) {
-					String sTemp = data2.get(a).toString();
-					data[i][ii] = sTemp.substring(0);
+				if (2 == ii) {
+					data[i][ii] = 0;
 				} else {
 					data[i][ii] = data2.get(a);
+					a++;
 				}
-				a++;
+				
 			}
 		}
 		return data;
