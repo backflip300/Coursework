@@ -1,20 +1,45 @@
 package gui;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import net.miginfocom.swing.MigLayout;
 
 public class Tab2 {
-	
-	private JPanel tab2;
-public Tab2() {
-	// TODO Auto-generated constructor stub
-}
 
-public JPanel create() {
-	tab2 = new JPanel();
-	tab2.setLayout(new MigLayout());
-	
-	return tab2;
-}
+	private JPanel tab2;
+	private JTable table;
+	private Tab2TableModel tModel;
+	private DefaultTableModel dtablemodel;
+
+	public Tab2() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@SuppressWarnings("serial")
+	public JPanel create() {
+		tab2 = new JPanel();
+		tab2.setLayout(new MigLayout());
+		
+		tModel = new Tab2TableModel();
+
+		dtablemodel = new DefaultTableModel(tModel.data, new Object[] { "product",
+				"# to produce" }) {
+			@Override
+			
+			public boolean isCellEditable(int row, int column) {
+				return column == 1;
+			}
+		};
+		
+		table = new JTable(dtablemodel);
+		JScrollPane scrollPane = new JScrollPane(table);
+		tab2.add(scrollPane, BorderLayout.CENTER);
+		
+		return tab2;
+	}
 }
