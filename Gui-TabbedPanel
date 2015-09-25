@@ -31,13 +31,13 @@ public class TabbedPanel extends JFrame {
 
 	public TabbedPanel() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int width = (int) screenSize.getWidth()/2;
-		int height = (int) 545;
+		int width = (int) 930;
+		int height = (int) 540;
 		
 		mFrame = new JFrame("Iventorize");
 		mFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		mFrame.getContentPane().setLayout(new MigLayout());
-		setTitle("Tabbed Pane Application");
+		setTitle("Inventorize");
 		setSize(width, height);
 		setBackground(Color.gray);
 
@@ -66,16 +66,12 @@ public class TabbedPanel extends JFrame {
 		panel2 = t2.create();
 	}
 
-	private void createPage2() {
-		
-		// panel2.add(new JLabel("Output"), "north");
-
-	}
+	
 
 	public static void main(String args[]) {
 		// Create an instance of the test application
 		TabbedPanel mainFrame = new TabbedPanel();
 		mainFrame.setVisible(true);
-		mainFrame.setResizable(false);
+		mainFrame.setResizable(true);
 	}
 }
