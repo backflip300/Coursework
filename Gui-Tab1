@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,11 +25,12 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.bind.ParseConversionEvent;
 
+import processing.FileAccess;
+import tableModels.Tab1TableModel;
 import net.miginfocom.swing.MigLayout;
 
 public class Tab1 {
 	private JPanel tab1;
-	private JFrame Frame1;
 	private JTable table;
 	private Tab1TableModel tModel;
 	private ScrollTextArea console;
@@ -40,8 +42,8 @@ public class Tab1 {
 
 	public Tab1() {
 
-		Stocks = new FileAccess(Paths.get("Stocks.txt"));
-		OrderHistory = new FileAccess(Paths.get("OrderHistory.txt"));
+		Stocks = new FileAccess(Paths.get("TextFiles/Stocks.txt"));
+		OrderHistory = new FileAccess(Paths.get("TextFiles/OrderHistory.txt"));
 
 	}
 
@@ -51,7 +53,7 @@ public class Tab1 {
 		tab1 = new JPanel();
 		tab1.setLayout(new MigLayout());
 		// buttons
-
+		
 		JButton restock = new JButton("Restock");
 		JButton newStock = new JButton("New Stock");
 		// scroll area
@@ -66,6 +68,7 @@ public class Tab1 {
 		// table
 
 		tModel = new Tab1TableModel();
+		
 		dtablemodel = new DefaultTableModel(tModel.data, new Object[] { "Name",
 				"Current in Stock", "# to restock" }) {
 			@Override
@@ -73,6 +76,7 @@ public class Tab1 {
 				return column == 2;
 			}
 		};
+	
 
 		// add above to tab1
 		tab1.add(cPanel, "east");
@@ -80,6 +84,7 @@ public class Tab1 {
 		tab1.add(newStock, "South");
 
 		table = new JTable(dtablemodel);
+		table.getTableHeader().setReorderingAllowed(false);
 		JScrollPane scrollPane = new JScrollPane(table);
 		tab1.add(scrollPane, BorderLayout.CENTER);
 
@@ -91,13 +96,12 @@ public class Tab1 {
 			public void actionPerformed(ActionEvent arg0) {
 
 				ArrayList<String> stemp = new ArrayList<String>();
-				FileAccess access = new FileAccess(Paths.get("Stocks.txt"));
+				FileAccess access = new FileAccess(Paths.get("TextFiles/Stocks.txt"));
 				stemp.add(JOptionPane.showInputDialog("name of Stock"));
 				stemp.add(JOptionPane.showInputDialog("current # in stock"));
 				dtablemodel.addRow(new Object[] { stemp.get(0), stemp.get(1), 0 });
 				access.sWriteFileData(stemp.get(0));
 				access.sWriteFileData(stemp.get(1));
-				access.sWriteFileData("0");
 			}
 		});
 
