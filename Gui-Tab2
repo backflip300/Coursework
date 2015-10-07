@@ -5,41 +5,62 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
+import tableModels.Tab2TableModel;
+import tableModels.timetableTableModel;
 import net.miginfocom.swing.MigLayout;
 
 public class Tab2 {
 
 	private JPanel tab2;
-	private JTable table;
+	private JTable table, ttable;
 	private Tab2TableModel tModel;
-	private DefaultTableModel dtablemodel;
+	private timetableTableModel ttModel;
+	private DefaultTableModel dtablemodel, dtablemodel2;
 
 	public Tab2() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@SuppressWarnings("serial")
 	public JPanel create() {
+
+		// layout
 		tab2 = new JPanel();
 		tab2.setLayout(new MigLayout());
-		
-		tModel = new Tab2TableModel();
 
-		dtablemodel = new DefaultTableModel(tModel.data, new Object[] { "product",
-				"# to produce" }) {
+		// create products table
+		tModel = new Tab2TableModel();
+		dtablemodel = new DefaultTableModel(tModel.data, new Object[] {
+				"product", "# to produce" }) {
 			@Override
-			
 			public boolean isCellEditable(int row, int column) {
 				return column == 1;
 			}
 		};
-		
 		table = new JTable(dtablemodel);
 		JScrollPane scrollPane = new JScrollPane(table);
+		table.getTableHeader().setReorderingAllowed(false);
+
+		// create timetable table
+		ttModel = new timetableTableModel();
+		dtablemodel2 = new DefaultTableModel(ttModel.data, new Object[] {
+				"timetable", "start", "finish" }) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return column >= 1;
+			}
+
+		};
+		ttable = new JTable(dtablemodel2);
+		JScrollPane ttscrollPane = new JScrollPane(ttable);
+		ttable.getTableHeader().setReorderingAllowed(false);
+
 		tab2.add(scrollPane, BorderLayout.CENTER);
-		
+		tab2.add(ttscrollPane);
+
+		// adding
 		return tab2;
 	}
 }
