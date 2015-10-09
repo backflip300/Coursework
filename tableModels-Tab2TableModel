@@ -1,11 +1,13 @@
-package gui;
+package tableModels;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import processing.FileAccess;
+
 public class Tab2TableModel {
-	private Path Products = Paths.get("Products.txt");
+	private Path Products = Paths.get("TextFiles/Products.txt");
 	public Object data[][];
 	private String columnNames[] = { "Product", "# to produce" };
 	private int a = 1;
@@ -33,15 +35,12 @@ public class Tab2TableModel {
 		for (int i = 0; i <= getRowCount() - 1; i++) {
 			for (int ii = 0; ii < 2; ii++) {
 				if (a % 2 == 0) {
-					String sTemp = data2
-							.get(a)
-							.toString()
+					String sTemp = data2.get(a).toString()
 							.substring(0, data2.get(a).toString().indexOf("["));
 					a++;
 					data[i][ii] = sTemp;
 					System.out.println(data[i][ii]);
 				} else {
-					
 
 					data[i][ii] = "0";
 				}
