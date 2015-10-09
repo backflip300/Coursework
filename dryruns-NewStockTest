@@ -1,0 +1,10 @@
+package dryruns;
+
+import processing.GetNewStock;
+
+public class NewStockTest {
+	public static void main(String args[]){
+		GetNewStock test = new GetNewStock();
+		test.addStock();
+	}
+}
