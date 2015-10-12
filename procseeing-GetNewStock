@@ -3,7 +3,10 @@ package processing;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.management.Query;
+import javax.management.ValueExp;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,8 +32,15 @@ public class GetNewStock {
 	private JTextField tName, tTime;
 	private JLabel lName, lTime;
 	private String newStock;
+	private String Name;
+	private int time;
+	
+	private boolean valid;
+	private Validater Validater;
+	private ArrayList<String> StocksNeeded = new ArrayList<String>();
 
 	public GetNewStock() {
+		Validater = new Validater();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -48,9 +58,14 @@ public class GetNewStock {
 		// text area for name and time
 		createTextAreas();
 		// put all together
-		panel.add(scrollPane);
-		panel.add(addProduct);
+		panel.add(scrollPane, "west");
+		panel.add(addProduct , "south");
+		panel.add(lName, "wrap");
+		panel.add(tName, "wrap");
+		panel.add(lTime, "wrap");
+		panel.add(tTime, "wrap");
 		frame.add(panel);
+		
 		frame.setVisible(true);
 		// table data from Stocks
 		// button when data entered(grey out)?
@@ -59,8 +74,8 @@ public class GetNewStock {
 	}
 
 	private void createTextAreas() {
-		tName = new JTextField();
-		tTime = new JTextField();
+		tName = new JTextField(15);
+		tTime = new JTextField(15);
 		lName = new JLabel("Name");
 		lTime = new JLabel("Time to create in minutes");
 
@@ -73,6 +88,53 @@ public class GetNewStock {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				valid = true;
+				
+				//name validated
+				if (Validater.vSimpleString(tName.getText()) == true) {
+					Name = tName.getText();
+				} else {
+					valid = false;
+				}
+				//time validated
+				if (Validater.vOnlyContainsNumbers(tTime.getText()) == true) {
+					time = Integer.parseInt(tTime.getText());
+					if (time <= 0) {
+						valid = false;
+					}
+				}else{
+					valid = false;
+				}
+				//stocks needed validated
+				for (int i = 0; i < nsTableModel.getRowCount(); i++) {
+
+					if (stocksTable.getValueAt(i, 1).toString().equals("0") == false
+							&& Validater.vOnlyContainsNumbers(stocksTable
+									.getValueAt(i, 1).toString()) == true) {
+						StocksNeeded.add(stocksTable.getValueAt(i, 0)
+								.toString());
+						StocksNeeded.add(stocksTable.getValueAt(i, 1)
+								.toString());
+						System.out.println(StocksNeeded.get(0));
+					}
+					
+				}
+				if (StocksNeeded.size() == 0){
+					valid = false;
+				}
+				System.out.println(valid);
+				if (valid == true){
+					newStock = Name + "[";
+					
+					for (int i = 0; i < StocksNeeded.size(); i ++){
+						newStock +=  "/" + StocksNeeded.get(i);
+						
+					}
+					newStock += "]" + time;
+					System.out.println(newStock);
+				}
+				
+				
 				// validate inputs of table, name, time to prepare
 				// sort out into correct format
 				// add prodcut to products table
@@ -104,7 +166,7 @@ public class GetNewStock {
 		frame = new JFrame("New Product");
 		frame.getContentPane().setLayout(new MigLayout());
 		frame.setTitle("Inventorize");
-		frame.setSize(500, 600);
+		frame.setSize(500, 400);
 		frame.setVisible(true);
 	}
 }
