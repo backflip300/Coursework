@@ -45,7 +45,9 @@ public class Validater {
 
 	public boolean vOnlyContainsNumbers(String toValidate) {
 		isValid = false;
-
+		if (toValidate.matches("[0-9]+")){
+			isValid=true;
+		}
 		return isValid;
 	}
 }
